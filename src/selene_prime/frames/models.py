@@ -6,14 +6,15 @@ No default lunar frame registry is shipped.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 from selene_prime.errors import ConfigurationError, FrameDefinitionError
 from selene_prime.geometry.vectors import Vector3
 
 
-class FrameKind(str, Enum):
+class FrameKind(StrEnum):
     """Broad frame classification used at coordinate-service boundaries."""
+
     INERTIAL = "inertial"
     BODY_FIXED = "body_fixed"
     OTHER = "other"
@@ -22,13 +23,18 @@ class FrameKind(str, Enum):
 @dataclass(frozen=True, slots=True)
 class FrameDefinition:
     """Caller-verified description of a named frame."""
+
     name: str
     center: str
     kind: FrameKind
     source: str
 
     def __post_init__(self) -> None:
-        for field_name, value in (("name", self.name), ("center", self.center), ("source", self.source)):
+        for field_name, value in (
+            ("name", self.name),
+            ("center", self.center),
+            ("source", self.source),
+        ):
             if not isinstance(value, str) or not value.strip():
                 raise FrameDefinitionError(f"frame {field_name} must be a nonempty string")
         if not isinstance(self.kind, FrameKind):
@@ -37,6 +43,7 @@ class FrameDefinition:
 
 class FrameRegistry:
     """Explicit registry; unknown frames are never inferred or auto-created."""
+
     def __init__(self) -> None:
         self._frames: dict[str, FrameDefinition] = {}
 
@@ -74,6 +81,7 @@ class FrameRegistry:
 @dataclass(frozen=True, slots=True)
 class FramedVector3:
     """A vector whose components are expressed in a named reference frame."""
+
     vector: Vector3
     frame: str
 
