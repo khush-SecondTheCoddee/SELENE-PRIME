@@ -5,12 +5,13 @@ import math
 from typing import Protocol
 
 from selene_prime.errors import FrameTransformError
-from selene_prime.frames.models import FrameRegistry, FramedVector3
+from selene_prime.frames.models import FramedVector3, FrameRegistry
 from selene_prime.geometry.rotations import Rotation3
 
 
 class TransformProvider(Protocol):
     """Provider returning a rotation mapping source-frame components to target."""
+
     def rotation(self, source: str, target: str, et_seconds: float) -> Rotation3:
         """Return source-to-target rotation at SPICE ET seconds."""
 
@@ -21,6 +22,7 @@ class FrameService:
     Source and target must share an origin. ET is supplied explicitly; this
     service does not parse UTC or convert time systems.
     """
+
     def __init__(
         self, registry: FrameRegistry, provider: TransformProvider | None = None
     ) -> None:
