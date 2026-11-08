@@ -8,10 +8,10 @@ import pytest
 from selene_prime.errors import FrameDefinitionError, FrameTransformError
 from selene_prime.frames import (
     FrameDefinition,
-    FramedVector3,
     FrameKind,
     FrameRegistry,
     FrameService,
+    FramedVector3,
     SpiceyPyTransformProvider,
 )
 from selene_prime.geometry.rotations import Rotation3
