@@ -1,6 +1,6 @@
 # Testing Strategy and Current Coverage
 
-**Status:** Phase 2 foundation tests exist. They do not establish scientific validity.
+**Status:** Phase 4 kernel/frame adapter failure-injection tests exist. They do not establish real ephemeris or scientific validity.
 
 ## Local checks
 
@@ -16,7 +16,7 @@ The GitHub Actions workflow runs these commands on Python 3.11–3.14. CI config
 
 ## Current tests
 
-`tests/unit/test_foundation.py` covers nonempty epoch labels, finite quantities, SHA-256 syntax, provenance timestamp validation and JSON round trips, and package logger output/root-logger isolation. `tests/unit/test_geometry.py` covers generic coordinates, vector/rotation invariants, and analytic circle overlap. Digest validation checks formatting only; it does not hash an artifact. No test exercises SPICE, a lunar datum, real terrain, apparent positions, radiometry, or mission-specific results.
+`tests/unit/test_foundation.py` covers shared model and logging behavior. `tests/unit/test_geometry.py` covers generic coordinates, vector/rotation invariants, and analytic circle overlap. `tests/unit/test_kernel_session.py` injects a fake SPICE API to exercise manifest integrity, explicit ownership, reverse-order cleanup, preloaded-pool refusal, rollback, state-chain failure, coverage gaps, and frame transforms. Its temporary bytes are deliberately invalid as SPICE kernels; no test loads them into CSPICE. No test exercises a genuine SPICE kernel, lunar datum, real terrain, apparent positions, radiometry, or mission-specific results.
 
 ## Planned layers
 
@@ -30,7 +30,7 @@ Add unit and property tests alongside each subsystem, then integration tests usi
 - `python -m ruff check .`: **not run**. Installing the dev extra attempted to build Ruff from source on Termux; its Rust/maturin build failed against this Android toolchain. The GitHub Actions Linux runner is configured to run Ruff, but no hosted CI result is available.
 - A no-build-isolation install was also attempted and failed because setuptools is not installed in the system interpreter; this does not affect the isolated editable install.
 
-These results cover only software-foundation behavior, not scientific correctness.
+These Phase 2 results cover only software-foundation behavior, not scientific correctness.
 
 ## Phase 3 execution record
 
@@ -38,3 +38,11 @@ These results cover only software-foundation behavior, not scientific correctnes
 - `python -m mypy`: strict check passed for all 9 source files.
 - Ruff and hosted CI remain pending for the Termux/toolchain reasons above.
 - Analytic expected/actual values and absolute errors are recorded in [the Phase 3 validation record](PHASE3_VALIDATION.md).
+
+## Phase 4 execution record
+
+- `pytest -q tests/unit/test_kernel_session.py`: **7 passed** on Python 3.14.6 / Android (Termux). These are mock-adapter lifecycle and failure-injection tests only.
+- `python -m pytest -q`: **32 passed** on Python 3.14.6 / Android (Termux).
+- `python -m mypy`: **passed**, strict configuration, 14 source files checked.
+- Ruff was not run because Ruff is not installed in this environment. Hosted CI remains pending.
+- No genuine kernels are available. Actual NAIF coverage, transformations, state queries, and results from mission kernels remain unevaluated.

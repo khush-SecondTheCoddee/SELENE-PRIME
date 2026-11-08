@@ -131,8 +131,8 @@ Severity describes impact on scientific validity/readiness, not probability. R-0
 
 1. **Phase 1 — Requirements/design:** baseline scope, subsystem contracts, assumptions, acceptance evidence, traceability, risks, and gates are documented.
 2. **Phase 2 — Project foundation:** package/build metadata, typed shared models/errors, logging/provenance schema, test/lint/type/CI setup, installation docs, and reproducibility policy are in place. No scientific dependencies/conventions were selected.
-3. **Phase 3 — Independent geometry primitives (current):** generic validated coordinates, vectors, rotations, and disk overlap are implemented with analytic references. The generic ellipsoid is not a lunar datum; SPICE integration remains later.
-4. **Phase 4 — Kernel and frame adapter:** implement manifest/hash/lifecycle/ownership and actual query coverage validation; integrate only with genuine user-supplied/officially obtained kernels and record their provenance.
+3. **Phase 3 — Independent geometry primitives:** generic validated coordinates, vectors, rotations, and disk overlap are implemented with analytic references. The generic ellipsoid is not a lunar datum; SPICE integration remains later.
+4. **Phase 4 — Kernel and frame adapter:** implemented manifest/hash/lifecycle/ownership, guarded actual-query coverage checks, and epoch-specific frame services. Mock failure tests pass; genuine user-supplied/officially obtained kernel integration and independent references remain pending.
 5. **Phase 5 — Terrain products and grid:** choose supported product from its real label; implement ingestion, metadata validation, interpolation, NoData and antimeridian behavior; preserve product provenance.
 6. **Phase 6 — Horizon and apparent positions:** implement terrain curvature/horizon and station-level Sun/Earth apparent geometry; establish independent reference cases and refinement diagnostics.
 7. **Phase 7 — Occultation and radiometry:** add finite-disk masks, Earth and terrain occultation, sourced passband radiometry, and joint mask integration.

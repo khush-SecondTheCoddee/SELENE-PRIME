@@ -1,12 +1,12 @@
 # Requirements Traceability Matrix
 
-**Status:** baseline links requirements to planned design and evidence. Implementation/evidence remains pending.
+**Status:** requirements are traced to design and executed local evidence where available. Scientific integration evidence remains pending.
 
 | Requirement | Design location | Planned verification | Current status |
 |---|---|---|---|
-| FR-01 Kernel lifecycle, integrity, provenance | `ARCHITECTURE.md` kernel subsystem/resource policy | Lifecycle unit/integration/failure tests | Not implemented; no kernels present |
-| FR-02 Coverage and state-chain validation | Kernel/ephemeris contract | Genuine-kernel positive and missing-coverage negative tests | Not implemented; no kernels present |
-| FR-03 Explicit frame transforms | Frame subsystem | Independent SPICE references, invariants, missing-frame tests | Not implemented |
+| FR-01 Kernel lifecycle, integrity, provenance | `src/selene_prime/kernels/manifest.py`, `session.py` | Fake-API lifecycle, integrity, ownership and cleanup failure tests | Implemented; 7 adapter tests passed. Authentic kernel provenance/integration unavailable. |
+| FR-02 Coverage and state-chain validation | `KernelSession.check_spk_body_coverage`, `validate_state_query` | Mocked gap/absent body and actual query failure tests; genuine SPK integration | Point-query and coverage guard implemented; mock failure cases passed. Genuine SPICE validation pending. |
+| FR-03 Explicit frame transforms | `src/selene_prime/frames/service.py`, `KernelSession.frame_rotation` | Mocked proper rotation and missing frame; independent genuine SPICE references | Named frame service and guards implemented; mock test passed. Independent SPICE reference pending. |
 | FR-04 Lunar datum and coordinate semantics | Coordinate subsystem | Independent round trips and known-point cases | Not implemented; datum choice open |
 | FR-05 Real PDS/LOLA ingestion | Product adapter | Genuine label/product checks and corruption cases | Not implemented; no product found; formats open |
 | FR-06 DEM interpolation | Grid/interpolation subsystem | Independent global/regional/edge/NoData cases | Not implemented |
@@ -20,10 +20,11 @@
 | FR-14 Benchmarks/convergence | Validation subsystem | Executed benchmark records and successive refinement report | Not implemented; no benchmark evidence |
 | NFR scientific honesty | Models/reporting and validation policy | Review output labels, synthetic/real distinction, audit | Policy documented; implementation pending |
 | NFR determinism | Validation/reproducibility design | Repeat-run comparison with fixed inputs | Not implemented |
-| NFR safe failures/resources | Kernel and error contracts | Failure injection and cleanup tests | Not implemented |
+| NFR safe failures/resources | `KernelSession` and `tests/unit/test_kernel_session.py` | Failure injection for setup, rollback, foreign pool, cleanup and query errors | Implemented; 7 adapter tests passed. Fork safety is fail-closed and real multi-process SPICE behavior remains unvalidated. |
 | NFR reproducible quality gates | `pyproject.toml` and `.github/workflows/quality.yml` | Install, lint, typing, unit/integration CI evidence | Editable install, tests, and mypy pass locally; Ruff and hosted CI pending |
 | Phase 2 foundation | `pyproject.toml`, `src/selene_prime/`, `README.md`, `docs/TESTING.md`, `docs/REPRODUCIBILITY.md`, `.github/workflows/quality.yml` | Editable install; unit tests; strict mypy; hosted CI | Implemented; local install, 7 foundation tests, and mypy passed. Ruff/hosted CI pending due Termux toolchain limitation. |
 | Phase 3 generic geometry primitives | `src/selene_prime/geometry/`, `tests/unit/test_geometry.py`, `tests/references/geometry_reference_cases.json`, `docs/GEOMETRY_PRIMITIVES.md` | Analytic circle/ellipsoid references, vector/rotation invariants, coordinate round trips/domains, failure cases | Implemented and locally verified for generic math; no selected lunar parameters or external frame validation. |
+| Phase 4 kernel/frame adapter | `src/selene_prime/kernels/`, `src/selene_prime/frames/`, `docs/PHASE4_VALIDATION.md` | Mocked lifecycle, integrity, frame, coverage and target-observer query failures; genuine kernel checks when supplied | Adapter implemented; 7 focused tests passed. Genuine-kernel validation unavailable. |
 
 ## Evidence bookkeeping convention
 
