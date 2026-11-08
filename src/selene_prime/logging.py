@@ -37,7 +37,9 @@ class JsonLineFormatter(logging.Formatter):
         return json.dumps(payload, ensure_ascii=False, default=str, sort_keys=True)
 
 
-def configure_logging(level: int | str = logging.INFO, *, stream: TextIO | None = None) -> logging.Logger:
+def configure_logging(
+    level: int | str = logging.INFO, *, stream: TextIO | None = None
+) -> logging.Logger:
     """Configure the package logger only; leave the root logger untouched.
 
     Calling this more than once updates the existing package handler rather than
@@ -56,7 +58,7 @@ def configure_logging(level: int | str = logging.INFO, *, stream: TextIO | None 
     if handler is None:
         handler = logging.StreamHandler(stream if stream is not None else sys.stderr)
         handler.setFormatter(JsonLineFormatter())
-        setattr(handler, "_selene_handler", True)
+        handler.__dict__["_selene_handler"] = True
         logger.addHandler(handler)
     else:
         handler.setStream(stream if stream is not None else sys.stderr)
