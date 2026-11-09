@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kernels": [
+    {
+      "path": "../data/real/kernels/naif0012.tls",
+      "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+      "kind": "TEXT",
+      "role": "leap_seconds",
+      "source": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls"
+    },
+    {
+      "path": "../data/real/kernels/pck00010.tpc",
+      "sha256": "59468328349aa730d18bf1f8d7e86efe6e40b75dfb921908f99321b3a7a701d2",
+      "kind": "TEXT",
+      "role": "other",
+      "source": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00010.tpc"
+    },
+    {
+      "path": "../data/real/kernels/de421.bsp",
+      "sha256": "08b20db2ae22488650641c5a9033e5bfda4b1c4b440cfeaf20f621cfa18ecdb3",
+      "kind": "SPK",
+      "role": "ephemeris",
+      "source": "https://naif.jpl.nasa.gov/pub/naif/JUNO/kernels/spk/de421.bsp"
+    },
+    {
+      "path": "../data/real/kernels/moon_pa_de421_1900-2050.bpc",
+      "sha256": "656f90616403d75a75f0cd6c8830fc5b44f8cb4facb5ccb8915e752b397520cf",
+      "kind": "PCK",
+      "role": "orientation",
+      "source": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de421_1900-2050.bpc"
+    },
+    {
+      "path": "../data/real/kernels/moon_080317.tf",
+      "sha256": "78732477b96f9863e7b0d65bcee3c22b8707ca5ed0db56d1173319cb2e8c7993",
+      "kind": "TEXT",
+      "role": "frame_definition",
+      "source": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_080317.tf"
+    }
+  ]
+}

@@ -28,8 +28,12 @@ The analytic interpolation value is calculated directly from its four scalar cor
 - `git diff --check` — **passed**.
 - Ruff — **not run**, Ruff is not installed in this environment.
 
+## Authentic product acquisition evidence
+
+The real PDS3 LDEM_16 product was opened with the reader using the archive image SHA-256 as an expected digest. The 33,177,600-byte image hash is `a511e40d7a3ea3275945b4da2a1df377133264fab0be94b7434b1cf8907254cb`. A separately downloaded copy from the official LOLA Data Node mirror compared byte-for-byte and produced the same hash. Individual kernel hashes are recorded in `config/research_kernels_de421.json`. This verifies local bytes against a second official host copy; it is not a checksum published by the PDS archive. The detached label digest is recorded locally but has no independently trusted digest in the archive listing. See `docs/REAL_DATA_CASE.md` for the pending end-to-end computation workflow.
+
 ## Limitations
 
-No authentic LOLA `.LBL`/`.IMG` product was present or read. The fixture uses simplified synthetic dimensions rather than the published product's full raster. Therefore successful authentic PDS ingestion, archive checksum reconciliation, global data continuity, real terrain heights, and compatibility with all LOLA GDR releases remain pending. Tests do not verify DEM datum transformations or horizon accuracy.
+The synthetic fixture uses simplified dimensions rather than the published raster. Authentic PDS ingestion was separately exercised as recorded above; automatic frame conversion, horizon accuracy, global data continuity, and compatibility with all LOLA GDR releases remain pending. The 62-test suite itself remains synthetic for terrain cases.
 
 The PDS3 LOLA GDR SIS states the sampled `HEIGHT` conversion is `DN × SCALING_FACTOR` in metres and distinguishes the `OFFSET` reference radius; the adapter retains these as separate quantities. The PDS3 standard defines projection offsets and pixel-coordinate conventions; test expectations use the corresponding pixel-center mapping. References: [LOLA GDR sample and SIS](https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/document/rdrsis.htm), [PDS3 Standards Reference](https://pds.nasa.gov/datastandards/pds3/standards/), and [LOLA GDR product overview](https://ode.rsl.wustl.edu/mars/pagehelp/Content/Missions_Instruments/LRO/LOLA/GDR/GDRDEM.htm).
