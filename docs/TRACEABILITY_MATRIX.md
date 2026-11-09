@@ -32,3 +32,5 @@
 When implementation begins, add source links and executed test/benchmark identifiers per row. Mark a requirement implemented only when code exists; mark verified only when stated evidence has actually run and passed. Partial support and unavailable external inputs remain explicit. Documentation or a planned test alone is not verification evidence.
 
 | Phase 6a terrain horizon | `src/selene_prime/terrain/horizon.py`, `tests/unit/test_horizon.py`, `docs/PHASE6_HORIZON.md` | Flat sphere, ridge, cache, bounds and pole synthetic cases | Implemented in the stated restricted geometry; full suite 45 tests and strict mypy pass. Not independently validated against real LOLA or external horizon software. |
+
+| Phase 6b apparent geometry | `src/selene_prime/apparent/positions.py`, `tests/unit/test_apparent_positions.py`, `docs/PHASE6_APPARENT_GEOMETRY.md` | Analytic moving-body LT and observer-position fixtures; error and convergence behavior | 3 tests pass; full suite 48 tests and strict mypy (20 files) pass. No authentic ephemeris kernel was available, so ephemeris accuracy is unverified. |

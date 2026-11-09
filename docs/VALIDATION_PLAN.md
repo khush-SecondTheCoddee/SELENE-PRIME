@@ -59,3 +59,5 @@ Passing G1–G6 supports only documented use cases. It does not imply NASA appro
 - Terrain horizon synthetic suite: `tests/unit/test_horizon.py` covers flat spherical baseline, isolated ridge, cache normalization/clear, and regional/polar failures. These checks are synthetic and do not establish independent lunar validation.
 - Current project run: `pytest -q` — 45 passed; `mypy --strict` — 18 source files passed. These results were executed during the Phase 6a increment.
 - Horizon refinement convergence, independent external horizon comparison, authentic product execution, and full illumination validation are still pending.
+
+- Station apparent-geometry synthetic suite: `tests/unit/test_apparent_positions.py` uses independently solved linearly moving-body equations and mock frame/state APIs. Full run at this increment: `pytest -q` — 48 passed; `mypy --strict` — 20 source files passed. Genuine SPICE reference comparison and real coverage remain pending.
