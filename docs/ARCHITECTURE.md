@@ -96,7 +96,7 @@ Scientific primitives remain independently testable. Product/SPICE adapters do n
 5. Compute terrain horizon and numerical/interpolation diagnostics. The initial implementation supports a spherical reference surface and planetocentric simple-cylindrical grids only; see `docs/PHASE6_HORIZON.md`.
 6. Compute observer-relative Sun and Earth apparent geometry with declared corrections. The initial service solves station-relative geometric LT while omitting stellar aberration; see `docs/PHASE6_APPARENT_GEOMETRY.md`.
 7. Build separate terrain and Earth solar-disk masks; integrate their joint mask with sourced radiometry. The initial caller-configured quadrature/mask implementation is in `src/selene_prime/radiometry/disk.py`; see its phase record for limits.
-8. Propagate configured uncertainty and run requested refinements.
+8. Propagate configured uncertainty and run requested refinements with the generic utilities in `src/selene_prime/validation/`; report metric differences separately from input uncertainty.
 9. Serialize result/provenance; close kernel session and surface cleanup failures without erasing primary failures.
 
 ## Concurrency and resource policy
@@ -136,7 +136,7 @@ Severity describes impact on scientific validity/readiness, not probability. R-0
 5. **Phase 5 — Terrain products and grid:** initial detached PDS3 LOLA GDR cylindrical integer IMG ingestion, scoped label/byte metadata checks, content SHA-256 provenance, memory-mapped access, and regular-grid interpolation are implemented. Tests use synthetic fixtures; genuine product integration, polar/JPEG2000/PDS4 support, datum transformation, and horizon validation remain pending.
 6. **Phase 6 — Horizon and apparent positions:** a restricted spherical terrain horizon is implemented with synthetic tests. Station-level geometric LT positions are implemented with analytic mocks; stellar aberration, genuine kernel checks, and independent horizon references remain pending.
 7. **Phase 7 — Occultation and radiometry:** finite-disk quadrature and pointwise Earth/terrain masks are implemented. Sourced physical passband values, atmosphere model, and convergence evidence remain pending.
-8. **Phase 8 — Uncertainty, convergence, reporting:** implement configured uncertainty methods, multi-resolution benchmark runner, machine-readable provenance, and human-readable reports.
+8. **Phase 8 — Uncertainty, convergence, reporting:** generic successive-refinement, local sensitivity, seeded independent-Gaussian Monte Carlo, and JSON-ready record utilities are implemented. No lunar run has supplied inputs/tolerances to generate a scientific report.
 9. **Phase 9 — Independent validation and audit:** run complete tests and real-data reference cases; produce convergence/uncertainty reports and red-team audit; fix critical/high findings before describing readiness for the documented research evaluation.
 
 Each phase has its own reviewable code/docs/evidence increment. If a required kernel, terrain product, or external reference is unavailable, dependent evidence remains explicitly pending while independent work proceeds.

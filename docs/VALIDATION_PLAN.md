@@ -63,3 +63,5 @@ Passing G1–G6 supports only documented use cases. It does not imply NASA appro
 - Station apparent-geometry synthetic suite: `tests/unit/test_apparent_positions.py` uses independently solved linearly moving-body equations and mock frame/state APIs. Full run at this increment: `pytest -q` — 48 passed; `mypy --strict` — 20 source files passed. Genuine SPICE reference comparison and real coverage remain pending.
 
 - Disk radiometry synthetic suite: `tests/unit/test_solar_disk.py` compares overlap against analytic planar circle area and exercises mask limits/joint composition. The full run is 52 passing tests; strict mypy passes 22 source files. No physical solar coefficients, authentic Earth-Sun reference, or convergence study has been executed.
+
+- Generic convergence/uncertainty suite: `tests/unit/test_validation_tools.py` validates all-successive-pair comparison, sensitivity against an analytic polynomial, and seeded Monte Carlo against a linear standard deviation. Full suite at this increment: 56 passed; strict mypy 25 source files. There are no executed lunar benchmark values; see `docs/ERROR_BUDGET.md`.
