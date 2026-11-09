@@ -19,7 +19,9 @@
 
 ## Terrain and horizon
 
-- DEM values are sampled terrain at product-defined registration. Interpolation cannot reconstruct features below raster resolution and may smooth narrow ridges.
+- DEM values are sampled terrain at product-defined registration. The first implemented importer supports detached PDS3 LOLA GDR simple cylindrical integer IMG only; pixel-center registration follows the PDS3 image map projection convention. Polar stereographic, PDS4, JPEG2000, and PC/VAX floating encodings are explicitly rejected.
+- For LOLA GDR `HEIGHT` samples, stored values are converted by `DN × SCALING_FACTOR` in metres; the label `OFFSET` is separately retained as the reference radius per the LOLA SIS. The adapter does not treat this reference radius as an additive height offset.
+- Interpolation cannot reconstruct features below raster resolution and may smooth narrow ridges.
 - Terrain horizon is observer-relative and requires curved-surface geometry. A tangent-plane approximation is limited to explicitly bounded conditions and cannot silently replace curved geometry.
 - Adaptive sampling can bound numerical misses only under assumptions about terrain bandwidth/roughness and raster sampling. It cannot detect features absent from the DEM.
 - NoData is not zero elevation. Policy distinguishes unknown obstruction from known terrain; default behavior should be invalid/unknown unless an explicitly declared conservative policy applies.

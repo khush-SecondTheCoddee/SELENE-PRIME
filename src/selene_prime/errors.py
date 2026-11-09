@@ -47,3 +47,11 @@ class EphemerisQueryError(KernelError):
 
 class FrameTransformError(KernelError):
     """Raised when a frame name or epoch-dependent transformation is unavailable."""
+
+
+class TerrainProductError(SelenePrimeError, ValueError):
+    """Raised when a terrain product is corrupt, unsupported, or ambiguous."""
+
+
+class TerrainGridError(SelenePrimeError, ValueError):
+    """Raised for invalid grid geometry, coordinates, or unavailable samples."""

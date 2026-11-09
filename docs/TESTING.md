@@ -16,7 +16,7 @@ The GitHub Actions workflow runs these commands on Python 3.11–3.14. CI config
 
 ## Current tests
 
-`tests/unit/test_foundation.py` covers shared model and logging behavior. `tests/unit/test_geometry.py` covers generic coordinates, vector/rotation invariants, and analytic circle overlap. `tests/unit/test_kernel_session.py` injects a fake SPICE API to exercise manifest integrity, explicit ownership, reverse-order cleanup, preloaded-pool refusal, rollback, state-chain failure, coverage gaps, and frame transforms. Its temporary bytes are deliberately invalid as SPICE kernels; no test loads them into CSPICE. No test exercises a genuine SPICE kernel, lunar datum, real terrain, apparent positions, radiometry, or mission-specific results.
+`tests/unit/test_foundation.py` covers shared model and logging behavior. `tests/unit/test_geometry.py` covers generic coordinates, vector/rotation invariants, and analytic circle overlap. `tests/unit/test_kernel_session.py` injects a fake SPICE API to exercise manifest integrity, explicit ownership, reverse-order cleanup, preloaded-pool refusal, rollback, state-chain failure, coverage gaps, and frame transforms. Its temporary bytes are deliberately invalid as SPICE kernels; no test loads them into CSPICE. `tests/unit/test_terrain.py` covers a synthetic PDS3 LOLA-like label/image fixture, signed sample decoding, height scale/reference radius separation, hashes, grid interpolation, antimeridian, edges, poles, NoData, and format rejection. No test exercises a genuine SPICE kernel, authentic PDS/LOLA raster, selected lunar datum transformation, apparent positions, radiometry, or mission-specific results.
 
 ## Planned layers
 
@@ -46,3 +46,13 @@ These Phase 2 results cover only software-foundation behavior, not scientific co
 - `python -m mypy`: **passed**, strict configuration, 14 source files checked.
 - Ruff was not run because Ruff is not installed in this environment. Hosted CI remains pending.
 - No genuine kernels are available. Actual NAIF coverage, transformations, state queries, and results from mission kernels remain unevaluated.
+
+
+## Phase 5 execution record
+
+- `pytest -q tests/unit/test_terrain.py`: **9 passed**.
+- `python -m pytest -q`: **41 passed** on Python 3.14.6 / Android (Termux).
+- `python -m mypy`: **passed**, strict configuration, 17 source files checked.
+- `python -m compileall -q src tests` and `git diff --check`: **passed**.
+- Ruff was not run because the module is not installed. Hosted CI has not been run.
+- Terrain data limitations and the supported label profile are documented in [Terrain data support](TERRAIN_DATA.md); test evidence is itemized in [Phase 5 validation](PHASE5_VALIDATION.md).
