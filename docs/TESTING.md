@@ -1,6 +1,6 @@
 # Testing Strategy and Current Coverage
 
-**Status:** Phase 4 kernel/frame adapter failure-injection tests exist. They do not establish real ephemeris or scientific validity.
+**Status:** synthetic/analytic tests now cover implemented geometry, kernel adapter behavior, terrain grids/horizons, apparent-geometry iteration, disk integration, and generic validation utilities. They do not establish real ephemeris or mission scientific validity.
 
 ## Local checks
 
@@ -16,7 +16,7 @@ The GitHub Actions workflow runs these commands on Python 3.11–3.14. CI config
 
 ## Current tests
 
-`tests/unit/test_foundation.py` covers shared model and logging behavior. `tests/unit/test_geometry.py` covers generic coordinates, vector/rotation invariants, and analytic circle overlap. `tests/unit/test_kernel_session.py` injects a fake SPICE API to exercise manifest integrity, explicit ownership, reverse-order cleanup, preloaded-pool refusal, rollback, state-chain failure, coverage gaps, and frame transforms. Its temporary bytes are deliberately invalid as SPICE kernels; no test loads them into CSPICE. `tests/unit/test_terrain.py` covers a synthetic PDS3 LOLA-like label/image fixture, signed sample decoding, height scale/reference radius separation, hashes, grid interpolation, antimeridian, edges, poles, NoData, and format rejection. No test exercises a genuine SPICE kernel, authentic PDS/LOLA raster, selected lunar datum transformation, apparent positions, radiometry, or mission-specific results.
+`tests/unit/test_foundation.py` covers shared model and logging behavior. `tests/unit/test_geometry.py` covers generic coordinates, vector/rotation invariants, and analytic circle overlap. `tests/unit/test_kernel_session.py` injects a fake SPICE API to exercise manifest integrity, explicit ownership, reverse-order cleanup, preloaded-pool refusal, rollback, state-chain failure, coverage gaps, and frame transforms. Its temporary bytes are deliberately invalid as SPICE kernels; no test loads them into CSPICE. `tests/unit/test_terrain.py` covers a synthetic PDS3 LOLA-like label/image fixture, signed sample decoding, height scale/reference radius separation, hashes, grid interpolation, antimeridian, edges, poles, NoData, and format rejection. No test uses a genuine SPICE kernel or authentic PDS/LOLA raster. Apparent-position and radiometry tests use synthetic inputs, and no mission-specific result is validated.
 
 ## Planned layers
 
@@ -56,3 +56,12 @@ These Phase 2 results cover only software-foundation behavior, not scientific co
 - `python -m compileall -q src tests` and `git diff --check`: **passed**.
 - Ruff was not run because the module is not installed. Hosted CI has not been run.
 - Terrain data limitations and the supported label profile are documented in [Terrain data support](TERRAIN_DATA.md); test evidence is itemized in [Phase 5 validation](PHASE5_VALIDATION.md).
+
+
+## Phase 6–15 execution record
+
+- Full `pytest -q`: **62 passed**; `mypy --strict`: **27 package source files passed** on Python 3.14.6 / Android Termux. `uv lock --check` passed.
+- `python scripts/run_analytic_benchmarks.py`: **3 analytic/synthetic cases passed**. `python scripts/run_synthetic_convergence.py`: **4 successive synthetic refinements recorded**, without tolerance/pass claims.
+- `python scripts/run_analytic_benchmarks.py`: 3 analytic/synthetic benchmark cases passed and wrote the report under `reports/`.
+- Ruff check could not execute: installing it through `uv` failed while building `maturin` because Termux Rust lacks required standard-library rlib artifacts. Hosted GitHub Actions has no recorded result here.
+- Full real-kernel, real-product, external-frame, lunar horizon, physical passband, convergence and uncertainty integration remains pending.

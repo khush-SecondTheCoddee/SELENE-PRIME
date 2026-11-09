@@ -2,13 +2,13 @@
 
 **Version 1.0.0 — clean-room research implementation**
 
-SELENE-PRIME is being developed as a modular research framework for lunar terrain horizons, solar and Earth occultation, and surface irradiance. The project is currently at the Phase 5 terrain ingestion and grid stage. It does not yet calculate scientifically meaningful illumination results and has no verified real-kernel or real-terrain integration.
+SELENE-PRIME is an incremental clean-room research framework for lunar terrain horizons, station-level apparent Sun/Earth geometry, solar-disk occultation, and surface irradiance. It currently provides restricted standalone scientific components, but not a validated end-to-end lunar illumination product. No genuine SPICE kernels or LOLA raster have been used for integration evidence.
 
 This is research software. It is not NASA-approved, certified, flight-qualified, or mission-ready.
 
 ## Current foundation
 
-The package provides immutable shared metadata records, typed exceptions, deterministic provenance JSON, JSON-line logging, generic geometry primitives, hash-bearing kernel manifests, explicit SPICE session lifecycle management, guarded epoch-specific ephemeris queries, a named frame service, PDS3 LOLA GDR cylindrical IMG ingestion, and regular-grid interpolation. Phase 4 lifecycle and Phase 5 product/grid behavior have unit tests. The terrain product tests use synthetic bytes modeled on published label metadata; no genuine LOLA raster or SPICE kernels are included, so real-data integration and scientific illumination remain unverified.
+Implemented components include generic vectors/rotations/ellipsoid math; owned SPICE kernel/session and frame adapters; a scoped detached PDS3 LOLA GDR reader; regular-grid interpolation; spherical terrain horizons; iterated geometric light-time positions for a body-fixed lunar station; finite solar-disk quadrature with pointwise terrain/Earth masks; provenance; successive-resolution comparisons; and generic sensitivity/Monte Carlo tools. Synthetic/analytic test coverage is executed locally. Datum conversion from product to station coordinates, independent real-kernel/real-product validation, physical passband selection, convergence/error bounds, and an end-to-end scientific report remain pending. See the traceability matrix and audit for exact scope.
 
 ## Install for development
 
@@ -34,6 +34,7 @@ See [docs/TESTING.md](docs/TESTING.md) and [docs/REPRODUCIBILITY.md](docs/REPROD
 
 ## Project documents
 
+- [Fifteen-phase delivery status](docs/PHASE_STATUS.md)
 - [Requirements](docs/REQUIREMENTS.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Scientific assumptions](docs/SCIENTIFIC_ASSUMPTIONS.md)
@@ -41,5 +42,12 @@ See [docs/TESTING.md](docs/TESTING.md) and [docs/REPRODUCIBILITY.md](docs/REPROD
 - [Traceability matrix](docs/TRACEABILITY_MATRIX.md)
 - [Terrain data support](docs/TERRAIN_DATA.md)
 - [Phase 5 validation](docs/PHASE5_VALIDATION.md)
+- [Phase 6 horizon](docs/PHASE6_HORIZON.md)
+- [Phase 6 apparent geometry](docs/PHASE6_APPARENT_GEOMETRY.md)
+- [Phase 7 radiometry and occultation](docs/PHASE7_RADIOMETRY_OCCULTATION.md)
+- [Phase 8 convergence and uncertainty](docs/PHASE8_CONVERGENCE_UNCERTAINTY.md)
+- [Error budget](docs/ERROR_BUDGET.md)
+- [Executed analytic/synthetic benchmarks](reports/ANALYTIC_SYNTHETIC_BENCHMARKS.json)
+- [Independent audit](docs/FINAL_INDEPENDENT_AUDIT.md)
 
-Real kernels, terrain products, passband choices, and reference benchmarks are not included. See [terrain product support and acquisition](docs/TERRAIN_DATA.md) for the currently supported PDS3 LOLA subset. Install the optional `spice` extra and supply authentic, individually listed kernels with independently obtained SHA-256 digests for real SPICE use. See the design decision gates before interpreting any future result.
+No real kernels, terrain rasters, physical solar coefficient set, or lunar benchmark is included. The checked-in benchmark JSON is analytic/synthetic only. See [terrain product support and acquisition](docs/TERRAIN_DATA.md) for the supported PDS3 LOLA subset. Install the optional `spice` extra and supply authentic kernels and trusted SHA-256 digests for SPICE queries.

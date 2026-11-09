@@ -1,6 +1,6 @@
-# SELENE-PRIME — Proposed Architecture
+# SELENE-PRIME — Architecture and Implementation Record
 
-**Status:** design proposal for Phase 1. No subsystem implementation is implied.
+**Status:** incremental. Components and evidence are described below; the system is not an end-to-end validated research product.
 
 ## Design principles
 
@@ -32,7 +32,7 @@ benchmarks/                    # versioned inputs/configs; no fabricated results
 docs/
 ```
 
-Names are provisional. Stabilize contracts before implementation. Add root `pyproject.toml` and quality configuration in Phase 2.
+The initial package map was a proposal. Current implemented paths include `kernels/`, `frames/`, `geometry/`, `terrain/`, `apparent/`, `radiometry/`, and `validation/`. Coordinate/datum transforms, independent real-data references, report orchestration, and CLI remain pending.
 
 ## Subsystem responsibilities and contracts
 
@@ -103,9 +103,9 @@ Scientific primitives remain independently testable. Product/SPICE adapters do n
 
 SPICE kernel-pool state is process-global in common usage and must be treated as shared mutable state until the selected interface is verified. Initial safe policy: one explicitly serialized kernel-owning session per process, with process isolation for independent kernel sets if needed. No thread-safety claim until tested. Track kernel ownership; unload only kernels this manager loaded. Nested sessions and externally preloaded kernels require explicit policy. Use context managers, not destructors. Report cleanup failure while preserving an active primary exception.
 
-## Phase 2 decision gates
+## Remaining scientific decision gates
 
-The Phase 2 foundation now exists in `pyproject.toml`, `src/selene_prime/`, and the root quality workflow. No scientific dependency or physical convention has been selected.
+The package foundation and CI workflow exist. Physical conventions requiring user/product selection remain open: supported lunar datum/frames and station transformation, true PDS product coverage, passband/irradiance/limb-darkening source, atmospheric treatment, external reference cases, and research-use error budgets.
 
 Select supported Python/platforms; PDS product subset (potentially selected PDS3 LOLA raster products, contingent on actual labels); raster abstraction/dependencies; time conversion API; SPICE process/thread policy; lunar datum/frame for each supported product/use case; radiometric passband and coefficient source; independent reference cases; and performance targets. Current repository evidence does not establish these choices.
 
@@ -127,6 +127,8 @@ Select supported Python/platforms; PDS product subset (potentially selected PDS3
 
 Severity describes impact on scientific validity/readiness, not probability. R-01 and R-02 block any credible research claim if unresolved for the requested use case.
 
+For the original fifteen-phase delivery status, evidence, and remaining gates, see `docs/PHASE_STATUS.md`.
+
 ## Staged implementation plan
 
 1. **Phase 1 — Requirements/design:** baseline scope, subsystem contracts, assumptions, acceptance evidence, traceability, risks, and gates are documented.
@@ -137,6 +139,6 @@ Severity describes impact on scientific validity/readiness, not probability. R-0
 6. **Phase 6 — Horizon and apparent positions:** a restricted spherical terrain horizon is implemented with synthetic tests. Station-level geometric LT positions are implemented with analytic mocks; stellar aberration, genuine kernel checks, and independent horizon references remain pending.
 7. **Phase 7 — Occultation and radiometry:** finite-disk quadrature and pointwise Earth/terrain masks are implemented. Sourced physical passband values, atmosphere model, and convergence evidence remain pending.
 8. **Phase 8 — Uncertainty, convergence, reporting:** generic successive-refinement, local sensitivity, seeded independent-Gaussian Monte Carlo, and JSON-ready record utilities are implemented. No lunar run has supplied inputs/tolerances to generate a scientific report.
-9. **Phase 9 — Independent validation and audit:** run complete tests and real-data reference cases; produce convergence/uncertainty reports and red-team audit; fix critical/high findings before describing readiness for the documented research evaluation.
+9. **Phase 9 — Validation and audit:** synthetic/analytic records and an initial red-team audit are being assembled. Genuine data, independent SPICE/LOLA cases, research convergence, and uncertainty reports remain required before the documented research evaluation.
 
 Each phase has its own reviewable code/docs/evidence increment. If a required kernel, terrain product, or external reference is unavailable, dependent evidence remains explicitly pending while independent work proceeds.

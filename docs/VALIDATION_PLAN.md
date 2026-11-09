@@ -1,6 +1,6 @@
 # Validation Plan
 
-**Status:** planned. No tests or benchmarks described here have been implemented or executed.
+**Status:** incremental execution evidence exists for synthetic/analytic cases; end-to-end real-data validation remains pending.
 
 ## Validation rules
 
@@ -65,3 +65,5 @@ Passing G1–G6 supports only documented use cases. It does not imply NASA appro
 - Disk radiometry synthetic suite: `tests/unit/test_solar_disk.py` compares overlap against analytic planar circle area and exercises mask limits/joint composition. The full run is 52 passing tests; strict mypy passes 22 source files. No physical solar coefficients, authentic Earth-Sun reference, or convergence study has been executed.
 
 - Generic convergence/uncertainty suite: `tests/unit/test_validation_tools.py` validates all-successive-pair comparison, sensitivity against an analytic polynomial, and seeded Monte Carlo against a linear standard deviation. Full suite at this increment: 56 passed; strict mypy 25 source files. There are no executed lunar benchmark values; see `docs/ERROR_BUDGET.md`.
+
+- Executed reusable benchmark runner: `python scripts/run_analytic_benchmarks.py` wrote `reports/ANALYTIC_SYNTHETIC_BENCHMARKS.json`. Three analytic/synthetic cases passed with expected value, source, tolerance, actual value, absolute/relative error, and status. This report is not lunar or mission validation.

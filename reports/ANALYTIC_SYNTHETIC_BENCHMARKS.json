@@ -1,0 +1,56 @@
+{
+  "designation": "analytic_and_synthetic_only",
+  "executed_at_utc": "2026-11-09T10:10:31.040035+00:00",
+  "results": [
+    {
+      "absolute_error": 4.440892098500626e-16,
+      "absolute_tolerance": 2e-15,
+      "actual": 1.228369698608757,
+      "case_id": "circle_partial_overlap",
+      "category": "circle_overlap",
+      "designation": "analytic",
+      "expected": 1.2283696986087567,
+      "inputs": "r1=r2=1, separation=1",
+      "reference_source": "Closed-form two-circle lens area; fixed reference from tests/references/geometry_reference_cases.json",
+      "relative_error": 3.615273238610779e-16,
+      "relative_tolerance": 0.0,
+      "status": "pass",
+      "unit": "unit^2"
+    },
+    {
+      "absolute_error": 9.992007221626409e-16,
+      "absolute_tolerance": 1e-12,
+      "actual": 0.500000000000001,
+      "case_id": "solar_half_plane",
+      "category": "solar_visibility",
+      "designation": "analytic",
+      "expected": 0.5,
+      "inputs": "angular radius=0.01 rad; center elevation=0; horizon=0; u=0",
+      "reference_source": "Reflection symmetry of a uniform circular disk across a straight horizon",
+      "relative_error": 1.9984014443252818e-15,
+      "relative_tolerance": 0.0,
+      "status": "pass",
+      "unit": "fraction"
+    },
+    {
+      "absolute_error": 0.0,
+      "absolute_tolerance": 1e-14,
+      "actual": 3.0,
+      "case_id": "dem_bilinear_center",
+      "category": "dem_interpolation",
+      "designation": "synthetic",
+      "expected": 3.0,
+      "inputs": "values=((0,2),(4,6)) m; query at central pixel-coordinate midpoint",
+      "reference_source": "Independent four-corner arithmetic mean at the center of a 2x2 pixel grid",
+      "relative_error": 0.0,
+      "relative_tolerance": 0.0,
+      "status": "pass",
+      "unit": "m"
+    }
+  ],
+  "schema_version": 1,
+  "software": {
+    "platform": "Android-16-aarch64-64bit",
+    "python": "3.14.6"
+  }
+}

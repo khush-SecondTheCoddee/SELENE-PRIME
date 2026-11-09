@@ -202,3 +202,28 @@ def test_grid_axes_reject_nonuniform_or_wrongly_ordered_coordinates() -> None:
         GridGeometry.from_coordinate_axes([2.0, 1.0, -0.2], [3.0, 2.0, 1.0])
     with pytest.raises(TerrainGridError, match="ordered"):
         GridGeometry.from_coordinate_axes([0.0, 1.0], [1.0, 0.0])
+
+
+def test_spherical_grid_site_cartesian_position_has_explicit_frame() -> None:
+    from selene_prime.terrain import station_position_from_spherical_grid
+
+    geometry = GridGeometry(2, 2, 0.5, 0.5, 0, 0, 1)
+    grid = TerrainGrid(SequenceElevationSource(((0.0, 0.0), (0.0, 0.0))), geometry,
+                       1000.0, "site-fixture", native_frame="SYNTHETIC_BODY_FIXED",
+                       reference_axes_m=(1000.0, 1000.0, 1000.0))
+    position = station_position_from_spherical_grid(grid, 0.0, 0.0)
+    assert position.position_km.x == pytest.approx(1.0)
+    assert position.position_km.y == pytest.approx(0.0, abs=1e-15)
+    assert position.native_frame_label == "SYNTHETIC_BODY_FIXED"
+    assert position.product_id == "site-fixture"
+
+
+def test_site_cartesian_rejects_unknown_or_non_spherical_datum() -> None:
+    from selene_prime.terrain import station_position_from_spherical_grid
+
+    geometry = GridGeometry(2, 2, 0.5, 0.5, 0, 0, 1)
+    grid = TerrainGrid(SequenceElevationSource(((0.0, 0.0), (0.0, 0.0))), geometry,
+                       1000.0, "unknown", native_frame="UNKNOWN",
+                       reference_axes_m=(1000.0, 1000.0, 999.0))
+    with pytest.raises(TerrainGridError, match="spherical reference axes"):
+        station_position_from_spherical_grid(grid, 0.0, 0.0)

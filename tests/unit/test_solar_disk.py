@@ -66,7 +66,24 @@ def test_terrain_and_earth_masks_combine_pointwise() -> None:
 def test_input_validation_and_horizon_errors_fail_closed() -> None:
     with pytest.raises(ConfigurationError, match="source and passband"):
         SolarDiskConfig(1361, 1, 0, "", "", 32)
+    with pytest.raises(ConfigurationError, match="provided together"):
+        integrate_solar_disk(solar_angular_radius_rad=ALPHA, solar_azimuth_rad=0,
+                             solar_elevation_rad=0.2, config=CFG, earth_azimuth_rad=0.0)
     with pytest.raises(ConfigurationError, match="horizon callback"):
         integrate_solar_disk(solar_angular_radius_rad=ALPHA, solar_azimuth_rad=0,
                              solar_elevation_rad=0.2, config=CFG,
                              horizon_elevation=lambda az: float("nan"))
+
+
+def test_area_visibility_is_separate_from_limb_weighted_flux_visibility() -> None:
+    darkened = SolarDiskConfig(1361.0, 1.0, 0.8, "synthetic linear law", "synthetic", 256)
+    kwargs = dict(solar_angular_radius_rad=ALPHA, solar_azimuth_rad=0.0,
+                  solar_elevation_rad=0.4, earth_angular_radius_rad=0.6*ALPHA,
+                  earth_azimuth_rad=0.8*ALPHA / math.cos(0.4), earth_elevation_rad=0.4)
+    uniform = integrate_solar_disk(config=CFG, **kwargs)
+    limb_darkened = integrate_solar_disk(config=darkened, **kwargs)
+    assert uniform.visible_fraction == pytest.approx(limb_darkened.visible_fraction, abs=1e-14)
+    assert uniform.earth_occluded_fraction == pytest.approx(limb_darkened.earth_occluded_fraction, abs=1e-14)
+    assert limb_darkened.irradiance_visible_fraction != pytest.approx(
+        uniform.irradiance_visible_fraction, abs=1e-5
+    )

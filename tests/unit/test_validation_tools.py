@@ -48,3 +48,16 @@ def test_monte_carlo_is_seeded_and_matches_linear_uncertainty() -> None:
     assert first.output_means["sum"] == pytest.approx(-3.0, abs=0.01)
     assert first.output_standard_deviations["sum"] == pytest.approx((0.2**2 + (2*0.1)**2) ** 0.5, abs=0.01)
     assert first.to_dict()["seed"] == 8
+
+
+def test_benchmark_record_preserves_reference_error_and_status() -> None:
+    from selene_prime.validation import BenchmarkCase, execute_benchmark
+
+    case = BenchmarkCase("analytic_half_disk", "visibility", "analytic",
+                        "area of a half-circle divided by full circle", "half-plane mask", 0.5,
+                        "fraction", 1e-6, 0.0)
+    result = execute_benchmark(case, lambda: 0.5000002)
+    assert result.status == "pass"
+    assert result.absolute_error == pytest.approx(2e-7)
+    assert result.relative_error == pytest.approx(4e-7)
+    assert '"status":"pass"' in result.to_json()

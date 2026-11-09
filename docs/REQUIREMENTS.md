@@ -1,6 +1,6 @@
 # SELENE-PRIME 1.0.0 — Technical Requirements
 
-**Status:** Baseline requirements with Phase 4 kernel/frame and partial Phase 5 terrain/grid implementation evidence recorded in the traceability matrix. No end-to-end scientific result is verified.
+**Status:** Requirements baseline with incremental implementation and executed synthetic evidence recorded in the phase status and traceability documents. No end-to-end lunar scientific result is verified.
 
 ## Purpose and scope
 
@@ -31,7 +31,7 @@ Initial supported operation is a Python library plus reproducible command-line b
 | FR-01 | Manage explicit SPICE kernel manifests, SHA-256, provenance, ownership, load/unload lifecycle, rollback, and actionable errors. | Lifecycle tests plus genuine-kernel integration; mismatch, coverage, frame, and cleanup failures reject safely. |
 | FR-02 | Validate requested ephemeris query, target-observer state chain, time coverage, and required frame/orientation data at the requested epoch. | Negative tests for missing coverage/frame cases and independent reference queries. |
 | FR-03 | Transform between explicitly named inertial and body-fixed frames using validated SPICE transformations; reject unknown/unavailable transforms. | Rotation invariants, independent known-frame cases, and failure injection. |
-| FR-04 | Convert geodetic/planetographic, planetocentric, Cartesian, and DEM-native coordinates using a named lunar datum and verified parameters. | Independent forward/inverse tests and source-backed reference points within declared tolerances. |
+| FR-04 | Convert geodetic/planetographic, planetocentric, Cartesian, and DEM-native coordinates using a named lunar datum and verified parameters. Current generic ellipsoid math and spherical-grid vector conversion do not select/map a lunar product datum to SPICE. | Independent forward/inverse tests and source-backed reference points within declared tolerances. |
 | FR-05 | Ingest selected real PDS/LOLA product types, preserving labels, identifiers, encoding, scaling, units, NoData, projection, registration, datum, resolution, integrity, and provenance. Initial implementation scopes PDS3 LOLA GDR cylindrical IMG, 16-bit signed integer. | Genuine product checks; malformed metadata/checksum cases reject. Synthetic arrays do not count as ingestion evidence. |
 | FR-06 | Validate DEM grids and provide documented NoData-aware interpolation with longitude convention, pixel registration, edges, poles, and antimeridian behavior explicit. Initial implementation supports regular simple cylindrical LOLA grids. | Independent cases for global 0–360 and −180–180 grids, regions, edges, NoData, malformed grids, and wraparound. |
 | FR-07 | Compute station-relative, azimuth-dependent terrain horizons with lunar curvature, adaptive resolution-aware sampling, configured range/tolerance, cache provenance, and cache error estimate. | Analytic fixtures and refinement studies show ridge capture and bounded error for stated cases. |

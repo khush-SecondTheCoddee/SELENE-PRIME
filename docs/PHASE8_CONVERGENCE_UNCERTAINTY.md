@@ -13,3 +13,8 @@ Results expose JSON-ready dictionaries. Existing `RunProvenance` provides determ
 `tests/unit/test_validation_tools.py` verifies successive-refinement bookkeeping, tolerance validation, polynomial finite-difference sensitivities, and repeatable seeded Monte Carlo against a linear analytic uncertainty calculation. The executed full suite: 56 passed. Strict mypy: 25 package source files passed.
 
 No lunar reference case, authentic LOLA data, loaded kernel, passband coefficient source, uncertainty distribution, or scientifically approved acceptance tolerance has been supplied. Therefore this increment produces no lunar convergence report and no mission uncertainty estimate. A future run must store evaluator/configuration, each refinement value, input distributions, seed, units, and reference provenance.
+
+
+## Executed synthetic refinement record
+
+`scripts/run_synthetic_convergence.py` was executed and wrote `reports/SYNTHETIC_REFINEMENT_STUDY.json`. It records four successive square-grid disk resolutions (32, 64, 128, 256) and four terrain ray steps (0.5 to 0.0625 pixel) for a synthetic ridge and near-horizon uniform solar disk with Earth overlap. Every output metric and successive absolute difference is stored. Differences are non-monotonic for some disk quantities. No tolerance or pass/fail status is set because no scientific error budget is defined. This demonstrates the workflow and exposes behavior; it does not demonstrate lunar-model convergence or accuracy.

@@ -1,6 +1,6 @@
 # Scientific Assumptions and Limitations
 
-**Status:** design assumptions register. Choices are provisional until linked to a product, use case, source, and validation case. Unresolved choices remain explicit in output metadata.
+**Status:** implementation assumptions and unresolved scientific decisions. Caller-configured values are not source validation; unresolved choices remain explicit in outputs and phase records.
 
 ## Coordinate, time, and frame conventions
 
@@ -25,7 +25,7 @@
 - Terrain horizon is observer-relative and requires curved-surface geometry. A tangent-plane approximation is limited to explicitly bounded conditions and cannot silently replace curved geometry.
 - Adaptive sampling can bound numerical misses only under assumptions about terrain bandwidth/roughness and raster sampling. It cannot detect features absent from the DEM.
 - NoData is not zero elevation. Policy distinguishes unknown obstruction from known terrain; default behavior should be invalid/unknown unless an explicitly declared conservative policy applies.
-- Horizon cache keys include data identity, site, datum, frame, settings, and algorithm version; cached interpolation has an error estimate.
+- Current horizon cache keys use a live grid object identity, site, azimuth, and settings. The caller must clear cache if backing raster content is mutated. Results are exact-key hits only; there is no cached-profile interpolation or interpolation error estimate.
 
 ## Solar disk and radiometry
 

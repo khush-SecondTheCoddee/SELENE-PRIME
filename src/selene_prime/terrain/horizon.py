@@ -63,6 +63,12 @@ class TerrainHorizonEngine:
         """Return horizon elevation for a site and north-clockwise azimuth."""
         if grid.geometry.latitude_type != "planetocentric":
             raise TerrainGridError("horizon engine requires planetocentric DEM latitude")
+        axes = grid.reference_axes_m
+        if axes is None or any(not math.isclose(axis, grid.reference_radius_m, rel_tol=0.0, abs_tol=1e-6)
+                               for axis in axes):
+            raise TerrainGridError(
+                "spherical horizon engine requires declared reference axes equal to reference_radius_m"
+            )
         if not math.isfinite(latitude_deg) or not -90 < latitude_deg < 90:
             raise TerrainGridError("station latitude must be finite and strictly between poles")
         if not math.isfinite(longitude_deg) or not math.isfinite(azimuth_rad):
@@ -100,8 +106,31 @@ class TerrainHorizonEngine:
         east = (-math.sin(lon0), math.cos(lon0), 0.0)
         north = (-math.sin(lat0) * math.cos(lon0), -math.sin(lat0) * math.sin(lon0), math.cos(lat0))
         angular_pixel = math.radians(1.0 / grid.geometry.pixels_per_degree)
-        max_angle, max_range, range_m, count, maximum_step = 0.0, 0.0, 0.0, 0, 0.0
+        max_angle, max_range, range_m, count, maximum_step = -math.pi / 2, 0.0, 0.0, 0, 0.0
         origin = (station_radius * up[0], station_radius * up[1], station_radius * up[2])
+        # Estimate the one-sided local DEM slope as range approaches zero. A
+        # zero baseline would incorrectly erase a downhill local horizon.
+        probe = min(0.01, radius * angular_pixel * max(1e-6, abs(math.cos(lat0))) * 1e-3)
+        probe_delta = probe / radius
+        probe_lat_sin = (math.sin(lat0) * math.cos(probe_delta)
+                         + math.cos(lat0) * math.sin(probe_delta) * math.cos(azimuth))
+        probe_lat = math.asin(max(-1.0, min(1.0, probe_lat_sin)))
+        probe_lon = lon0 + math.atan2(
+            math.sin(azimuth) * math.sin(probe_delta) * math.cos(lat0),
+            math.cos(probe_delta) - math.sin(lat0) * math.sin(probe_lat),
+        )
+        probe_height = grid.elevation_m(math.degrees(probe_lat), math.degrees(probe_lon))
+        probe_radius = radius + probe_height
+        probe_point = (probe_radius * math.cos(probe_lat) * math.cos(probe_lon),
+                       probe_radius * math.cos(probe_lat) * math.sin(probe_lon),
+                       probe_radius * math.sin(probe_lat))
+        pdx, pdy, pdz = (probe_point[0] - origin[0], probe_point[1] - origin[1],
+                         probe_point[2] - origin[2])
+        pvertical = pdx * up[0] + pdy * up[1] + pdz * up[2]
+        peast = pdx * east[0] + pdy * east[1] + pdz * east[2]
+        pnorth = pdx * north[0] + pdy * north[1] + pdz * north[2]
+        max_angle = math.atan2(pvertical, math.hypot(peast, pnorth))
+        max_range, count = probe, 1
         while range_m < config.max_range_m:
             delta = range_m / radius
             sin_lat = math.sin(lat0) * math.cos(delta) + math.cos(lat0) * math.sin(delta) * math.cos(azimuth)

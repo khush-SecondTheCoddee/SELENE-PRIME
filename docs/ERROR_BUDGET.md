@@ -5,6 +5,7 @@ A numerical error budget requires selected scientific inputs and requirements fo
 | Contributor | Current model/control | Evidence available | Quantitative bound/status |
 |---|---|---|---|
 | Terrain vertical error | Inherited from selected DEM product; no uncertainty propagation from labels yet | Synthetic DEM interpolation and horizon fixtures | Pending real product accuracy and spatial covariance |
+| Reference-surface mismatch | Horizon now rejects missing axes or axes not equal to its explicit spherical radius | Failure tests for unknown and oblate axes | Prevented by fail-closed validation; ellipsoidal ray geometry remains unsupported |
 | DEM horizontal resolution / ridge loss | Horizon sample step defaults to <= half local pixel; bilinear DEM interpolation | Isolated synthetic ridge detection | No certified miss-angle bound; source may omit subpixel terrain |
 | Station coordinates/datum | Apparent service accepts explicit body-fixed vector in km | Mock rotations and state chain | Product datum conversion and station survey uncertainty pending |
 | Ephemeris and lunar orientation | Session validates actual SPICE state/frame queries | Mock failure/geometry tests | No genuine kernel set/reference comparison available |
@@ -17,3 +18,5 @@ A numerical error budget requires selected scientific inputs and requirements fo
 | Monte Carlo sampling | Seeded independent Gaussian input model | Synthetic linear model repeatability | No lunar distributions or finite-sample convergence study |
 
 Numerical convergence error and input/model uncertainty must remain separate in future reports. Tolerances require a downstream scientific requirement or independently sourced reference before they can be set.
+
+The synthetic refinement run in `reports/SYNTHETIC_REFINEMENT_STUDY.json` lists successive differences, but it assigns no acceptance tolerance and must not be read as a populated lunar error budget.

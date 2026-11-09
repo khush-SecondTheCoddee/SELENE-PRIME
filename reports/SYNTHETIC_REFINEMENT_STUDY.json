@@ -1,0 +1,123 @@
+{
+  "designation": "synthetic_refinement_study_not_mission_validation",
+  "executed_at_utc": "2026-11-09T10:10:35.840199+00:00",
+  "fixture": {
+    "center_separation_tangent_rad": 0.008,
+    "earth_radius_rad": 0.006,
+    "limb_darkening_u": 0.0,
+    "solar_elevation_rad": 0.003,
+    "solar_radius_rad": 0.01,
+    "terrain": "101x101 spherical grid; one 8 m ridge three pixels east of station"
+  },
+  "independent_planar_circle_overlap_fraction": 0.23204401933091395,
+  "schema_version": 1,
+  "successive_refinements": [
+    {
+      "absolute_difference_from_previous": null,
+      "disk_samples": 812,
+      "disk_subdivisions": 32,
+      "horizon_samples": 24,
+      "resolution": 32,
+      "terrain_step_fraction_pixel": 0.5,
+      "values": {
+        "combined_occluded_fraction": 0.4975330278070747,
+        "combined_visible_fraction": 0.5024669721929231,
+        "direct_horizontal_w_m2": 4.297444615677791,
+        "direct_normal_w_m2": 683.859326664368,
+        "earth_occulted_fraction": 0.23398962748109173,
+        "earth_only_visible_fraction": 0.7660103725189075,
+        "irradiance_visible_fraction": 0.5024682782251052,
+        "terrain_horizon_rad": 0.9868155343194754,
+        "terrain_visible_fraction": 0.6945855910175798
+      }
+    },
+    {
+      "absolute_difference_from_previous": {
+        "combined_occluded_fraction": 0.0021836941853831116,
+        "combined_visible_fraction": 0.002183694185379892,
+        "direct_horizontal_w_m2": 0.006164005997229438,
+        "direct_normal_w_m2": 2.971966151820425,
+        "earth_occulted_fraction": 0.002267571147392816,
+        "earth_only_visible_fraction": 0.0022675711473914006,
+        "irradiance_visible_fraction": 0.002183663594283791,
+        "terrain_horizon_rad": 0.0,
+        "terrain_visible_fraction": 0.0012055154992316464
+      },
+      "disk_samples": 3228,
+      "disk_subdivisions": 64,
+      "horizon_samples": 47,
+      "resolution": 64,
+      "terrain_step_fraction_pixel": 0.25,
+      "values": {
+        "combined_occluded_fraction": 0.4953493336216916,
+        "combined_visible_fraction": 0.504650666378303,
+        "direct_horizontal_w_m2": 4.3036086216750205,
+        "direct_normal_w_m2": 686.8312928161885,
+        "earth_occulted_fraction": 0.2317220563336989,
+        "earth_only_visible_fraction": 0.7682779436662989,
+        "irradiance_visible_fraction": 0.504651941819389,
+        "terrain_horizon_rad": 0.9868155343194754,
+        "terrain_visible_fraction": 0.6957911065168114
+      }
+    },
+    {
+      "absolute_difference_from_previous": {
+        "combined_occluded_fraction": 0.006120747681556404,
+        "combined_visible_fraction": 0.006120747681548799,
+        "direct_horizontal_w_m2": 0.002086175782078925,
+        "direct_normal_w_m2": 8.330394459085255,
+        "earth_occulted_fraction": 4.920036337263678e-05,
+        "earth_only_visible_fraction": 4.9200363371415534e-05,
+        "irradiance_visible_fraction": 0.0061207894629575765,
+        "terrain_horizon_rad": 1.1102230246251565e-16,
+        "terrain_visible_fraction": 0.009780160207203514
+      },
+      "disk_samples": 12892,
+      "disk_subdivisions": 128,
+      "horizon_samples": 93,
+      "resolution": 128,
+      "terrain_step_fraction_pixel": 0.125,
+      "values": {
+        "combined_occluded_fraction": 0.501470081303248,
+        "combined_visible_fraction": 0.4985299186967542,
+        "direct_horizontal_w_m2": 4.3015224458929415,
+        "direct_normal_w_m2": 678.5008983571032,
+        "earth_occulted_fraction": 0.23177125669707155,
+        "earth_only_visible_fraction": 0.7682287433029275,
+        "irradiance_visible_fraction": 0.4985311523564314,
+        "terrain_horizon_rad": 0.9868155343194756,
+        "terrain_visible_fraction": 0.6860109463096079
+      }
+    },
+    {
+      "absolute_difference_from_previous": {
+        "combined_occluded_fraction": 0.0001388790107805793,
+        "combined_visible_fraction": 0.00013887901079034926,
+        "direct_horizontal_w_m2": 0.003986052335156032,
+        "direct_normal_w_m2": 0.1890182715641231,
+        "earth_occulted_fraction": 0.00033373513118564735,
+        "earth_only_visible_fraction": 0.0003337351311896164,
+        "irradiance_visible_fraction": 0.00013888190416172508,
+        "terrain_horizon_rad": 3.3306690738754696e-16,
+        "terrain_visible_fraction": 0.000244814848091357
+      },
+      "disk_samples": 51468,
+      "disk_subdivisions": 256,
+      "horizon_samples": 185,
+      "resolution": 256,
+      "terrain_step_fraction_pixel": 0.0625,
+      "values": {
+        "combined_occluded_fraction": 0.5016089603140286,
+        "combined_visible_fraction": 0.4983910396859639,
+        "direct_horizontal_w_m2": 4.2975363935577855,
+        "direct_normal_w_m2": 678.3118800855391,
+        "earth_occulted_fraction": 0.2321049918282572,
+        "earth_only_visible_fraction": 0.7678950081717378,
+        "irradiance_visible_fraction": 0.4983922704522697,
+        "terrain_horizon_rad": 0.9868155343194759,
+        "terrain_visible_fraction": 0.6862557611576993
+      }
+    }
+  ],
+  "tolerance_policy": "No pass/fail tolerance assigned; no project scientific error budget is selected."
+}

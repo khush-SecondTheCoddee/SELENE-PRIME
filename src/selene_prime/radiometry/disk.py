@@ -35,8 +35,9 @@ class SolarDiskConfig:
 
 @dataclass(frozen=True, slots=True)
 class SolarDiskResult:
-    """Disk integrated illumination and mask fractions for one station geometry."""
+    """Disk area visibility and limb-weighted flux visibility for one geometry."""
     visible_fraction: float
+    irradiance_visible_fraction: float
     earth_occluded_fraction: float
     terrain_occluded_fraction: float
     combined_occluded_fraction: float
@@ -67,7 +68,10 @@ def integrate_solar_disk(
     direction. Earth occultation is a circular opaque disk in the same plane;
     terrain visibility tests every quadrature ray against a caller-supplied
     azimuth horizon. Masks are combined per sample before integration, so
-    overlapping obstructions are not double-counted.
+    overlapping obstructions are not double-counted. ``visible_fraction`` and
+    obstruction fractions are solid-angle fractions of the apparent solar disk;
+    ``irradiance_visible_fraction`` separately includes limb darkening and
+    projected irradiance weights.
     """
     if not math.isfinite(solar_angular_radius_rad) or not 0 < solar_angular_radius_rad < math.pi / 2:
         raise ConfigurationError("solar angular radius must be in (0, pi/2)")
@@ -75,7 +79,8 @@ def integrate_solar_disk(
         raise ConfigurationError("solar azimuth and elevation must be finite")
     if not -math.pi / 2 <= solar_elevation_rad <= math.pi / 2:
         raise ConfigurationError("solar elevation must be in [-pi/2, pi/2]")
-    earth_enabled = earth_angular_radius_rad is not None
+    if earth_angular_radius_rad is None and (earth_azimuth_rad is not None or earth_elevation_rad is not None):
+        raise ConfigurationError("Earth radius and apparent direction must be provided together")
     if earth_angular_radius_rad is not None:
         if earth_azimuth_rad is None or earth_elevation_rad is None:
             raise ConfigurationError("Earth radius and apparent direction must be provided together")
@@ -99,7 +104,9 @@ def integrate_solar_disk(
     solar_radius_tan = math.tan(solar_angular_radius_rad)
     n = config.subdivisions
     step = 2.0 * solar_radius_tan / n
-    total_weight = visible_weight = earth_weight = terrain_weight = combined_weight = horizontal_weight = 0.0
+    total_weight = visible_weight = horizontal_weight = 0.0
+    total_solid_angle = visible_solid_angle = 0.0
+    earth_solid_angle = terrain_solid_angle = combined_solid_angle = 0.0
     samples = 0
     for row in range(n):
         y = -solar_radius_tan + (row + 0.5) * step
@@ -115,14 +122,16 @@ def integrate_solar_disk(
             intensity = 1.0 - config.limb_darkening_u * (1.0 - mu)
             # dOmega and projected-area factors for gnomonic tangent-plane coordinates.
             weight = intensity / ((1.0 + r2) ** 2)
+            solid_angle_weight = 1.0 / ((1.0 + r2) ** 1.5)
             total_weight += weight
+            total_solid_angle += solid_angle_weight
             ray = _normalize((center[0] + x * east_basis[0] + y * vertical_basis[0],
                               center[1] + x * east_basis[1] + y * vertical_basis[1],
                               center[2] + x * east_basis[2] + y * vertical_basis[2]))
             earth_blocked = (earth_direction is not None and earth_angular_radius_rad is not None
                              and _dot(ray, earth_direction) >= math.cos(earth_angular_radius_rad))
             if earth_blocked:
-                earth_weight += weight
+                earth_solid_angle += solid_angle_weight
             ray_azimuth = math.atan2(ray[0], ray[1]) % (2.0 * math.pi)
             ray_elevation = math.asin(max(-1.0, min(1.0, ray[2])))
             terrain_blocked = False
@@ -132,19 +141,21 @@ def integrate_solar_disk(
                     raise ConfigurationError("horizon callback must return finite elevation in [-pi/2, pi/2]")
                 terrain_blocked = ray_elevation <= horizon
                 if terrain_blocked:
-                    terrain_weight += weight
+                    terrain_solid_angle += solid_angle_weight
             if earth_blocked or terrain_blocked:
-                combined_weight += weight
+                combined_solid_angle += solid_angle_weight
             else:
+                visible_solid_angle += solid_angle_weight
                 visible_weight += weight
                 horizontal_weight += weight * max(0.0, math.sin(ray_elevation))
 
-    if total_weight <= 0 or samples == 0:
+    if total_weight <= 0 or total_solid_angle <= 0 or samples == 0:
         raise ConfigurationError("solar disk quadrature produced no in-disk samples")
     irradiance = config.irradiance_w_m2_at_1au / (config.distance_au ** 2)
     return SolarDiskResult(
-        visible_weight / total_weight, earth_weight / total_weight, terrain_weight / total_weight,
-        combined_weight / total_weight, irradiance * visible_weight / total_weight,
+        visible_solid_angle / total_solid_angle, visible_weight / total_weight,
+        earth_solid_angle / total_solid_angle, terrain_solid_angle / total_solid_angle,
+        combined_solid_angle / total_solid_angle, irradiance * visible_weight / total_weight,
         irradiance * horizontal_weight / total_weight, solar_angular_radius_rad, samples, n,
         config.passband, config.limb_darkening_source, config.irradiance_w_m2_at_1au,
         config.distance_au, atmosphere_model,
