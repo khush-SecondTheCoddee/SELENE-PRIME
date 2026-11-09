@@ -93,7 +93,7 @@ Scientific primitives remain independently testable. Product/SPICE adapters do n
 2. Hash/verify declared files; establish explicit kernel session and record ownership.
 3. Validate actual epoch coverage and target-observer/frame state chain.
 4. Decode the product from metadata, validate grid/datum/registration, and construct the station in named body-fixed coordinates.
-5. Compute terrain horizon and numerical/interpolation diagnostics.
+5. Compute terrain horizon and numerical/interpolation diagnostics. The initial implementation supports a spherical reference surface and planetocentric simple-cylindrical grids only; see `docs/PHASE6_HORIZON.md`.
 6. Compute observer-relative Sun and Earth apparent geometry with declared corrections.
 7. Build separate terrain and Earth solar-disk masks; integrate their joint mask with sourced radiometry.
 8. Propagate configured uncertainty and run requested refinements.
@@ -134,7 +134,7 @@ Severity describes impact on scientific validity/readiness, not probability. R-0
 3. **Phase 3 — Independent geometry primitives:** generic validated coordinates, vectors, rotations, and disk overlap are implemented with analytic references. The generic ellipsoid is not a lunar datum; SPICE integration remains later.
 4. **Phase 4 — Kernel and frame adapter:** implemented manifest/hash/lifecycle/ownership, guarded actual-query coverage checks, and epoch-specific frame services. Mock failure tests pass; genuine user-supplied/officially obtained kernel integration and independent references remain pending.
 5. **Phase 5 — Terrain products and grid:** initial detached PDS3 LOLA GDR cylindrical integer IMG ingestion, scoped label/byte metadata checks, content SHA-256 provenance, memory-mapped access, and regular-grid interpolation are implemented. Tests use synthetic fixtures; genuine product integration, polar/JPEG2000/PDS4 support, datum transformation, and horizon validation remain pending.
-6. **Phase 6 — Horizon and apparent positions:** implement terrain curvature/horizon and station-level Sun/Earth apparent geometry; establish independent reference cases and refinement diagnostics.
+6. **Phase 6 — Horizon and apparent positions:** a restricted spherical terrain horizon is implemented with synthetic tests. Station-level Sun/Earth apparent geometry and independent horizon references remain pending.
 7. **Phase 7 — Occultation and radiometry:** add finite-disk masks, Earth and terrain occultation, sourced passband radiometry, and joint mask integration.
 8. **Phase 8 — Uncertainty, convergence, reporting:** implement configured uncertainty methods, multi-resolution benchmark runner, machine-readable provenance, and human-readable reports.
 9. **Phase 9 — Independent validation and audit:** run complete tests and real-data reference cases; produce convergence/uncertainty reports and red-team audit; fix critical/high findings before describing readiness for the documented research evaluation.

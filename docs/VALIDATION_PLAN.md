@@ -52,3 +52,10 @@ No numerical tolerances are selected in Phase 1. For each case, allocate error a
 - **G6 — Audit:** independent red-team review completed; critical/high findings resolved or research-evaluation readiness withheld.
 
 Passing G1–G6 supports only documented use cases. It does not imply NASA approval, flight qualification, or mission readiness.
+
+
+## Executed phase evidence update
+
+- Terrain horizon synthetic suite: `tests/unit/test_horizon.py` covers flat spherical baseline, isolated ridge, cache normalization/clear, and regional/polar failures. These checks are synthetic and do not establish independent lunar validation.
+- Current project run: `pytest -q` — 45 passed; `mypy --strict` — 18 source files passed. These results were executed during the Phase 6a increment.
+- Horizon refinement convergence, independent external horizon comparison, authentic product execution, and full illumination validation are still pending.

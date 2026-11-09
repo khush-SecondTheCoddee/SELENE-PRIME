@@ -10,7 +10,7 @@
 | FR-04 Lunar datum and coordinate semantics | Coordinate subsystem | Independent round trips and known-point cases | Not implemented; datum choice open |
 | FR-05 Real PDS/LOLA ingestion | `src/selene_prime/terrain/pds3_lola.py`, `docs/TERRAIN_DATA.md` | Synthetic PDS3 label/byte tests, digest mismatch, encoding and size rejection; genuine LOLA product integration | Partial implementation: detached PDS3 LOLA GDR cylindrical 16-bit signed integer IMG only. Synthetic tests pass; no real raster is available. |
 | FR-06 DEM interpolation | `src/selene_prime/terrain/grid.py` | Analytic pixel-center, regional/global, antimeridian, pole, edge, NoData and malformed-axis cases | Regular simple cylindrical grid interpolation implemented; 9 terrain tests pass. NoData edges are rejected conservatively. |
-| FR-07 Terrain horizon | Horizon/cache subsystem | Analytic fixtures and refinement/miss-error study | Not implemented |
+| FR-07 Terrain horizon | `src/selene_prime/terrain/horizon.py`, `docs/PHASE6_HORIZON.md` | Analytic fixtures, curvature and ridge checks; later refinement/miss-error study | Implemented for planetocentric regular grids on a spherical reference surface; 4 synthetic tests pass. Ellipsoidal validation, certified capture/error bounds, and real-product integration pending |
 | FR-08 Apparent Sun/Earth geometry | Ephemeris/apparent subsystem | Independent station-level SPICE reference cases | Not implemented; correction policy open |
 | FR-09 Solar disk and irradiance | Radiometry subsystem | Analytic limits, independent integration, sourced radiometry | Not implemented; passband/source open |
 | FR-10 Earth occultation | Earth occultation subsystem | Analytic overlap and independent quadrature | Not implemented; atmosphere policy open |
@@ -30,3 +30,5 @@
 ## Evidence bookkeeping convention
 
 When implementation begins, add source links and executed test/benchmark identifiers per row. Mark a requirement implemented only when code exists; mark verified only when stated evidence has actually run and passed. Partial support and unavailable external inputs remain explicit. Documentation or a planned test alone is not verification evidence.
+
+| Phase 6a terrain horizon | `src/selene_prime/terrain/horizon.py`, `tests/unit/test_horizon.py`, `docs/PHASE6_HORIZON.md` | Flat sphere, ridge, cache, bounds and pole synthetic cases | Implemented in the stated restricted geometry; full suite 45 tests and strict mypy pass. Not independently validated against real LOLA or external horizon software. |
